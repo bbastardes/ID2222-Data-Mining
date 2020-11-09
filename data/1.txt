@@ -1,1 +1,0 @@
-Excitation was achieved with the Lumencor LED light engine (472/20 nm for GFP and 543/20 nm for mCherry)

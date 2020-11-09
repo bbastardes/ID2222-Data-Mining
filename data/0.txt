@@ -1,1 +1,0 @@
-Branches that project out of the focal plane (3--red arrow, and 4--white arrow) are less visible in the simulated image, indicating that the branching complexity and branch length distribution of the actin filament could be misinterpreted from experimental fluorescence images

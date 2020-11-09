@@ -1,1 +1,0 @@
-Excitation light was filtered with a dual-band excitation filter ET/GFP-mCherry (59002x) and dichroic (89019bs), both from Chroma
