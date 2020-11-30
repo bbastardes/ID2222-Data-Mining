@@ -1,30 +1,26 @@
+clear all
+close all
+clc
+
 E = csvread('data/example1.dat');
 k = 4;
 
-%E = csvread('example2.dat');
+%E = csvread('data/example2.dat');
 %k = 2;
-
 sigma = 1;
-
-% Adjacency matrix
+%% Adjacency matrix
 col1 = E(:,1);
 col2 = E(:,2);
 max_ids = max(max(col1,col2));
-%As= sparse(col1, col2, 1, max_ids, max_ids); 
-%A = full(As)
 
 G = graph(col1, col2);
-A = adjacency(G);
-A = full(A);
+d = distances(G);
+%A = adjacency(G);
 
+%the identity matrix is necessaru to put Aii = 0
+A = exp(-(d.^2)./(2*sigma^2)) - eye(size(d));
 
-%for i = 1:241
-%    for j = 1:241
-%        A(i,j) = exp(-norm((i-j),2)/2*sigma^2);
-%        
-%    end
-%end
-
+%% 
 % Diagonal matrix and L
 D = diag(sum(A,2));
 L = D^(-1/2)*A*D^(-1/2);
@@ -44,5 +40,4 @@ color = [1 0 0; 0 1 0; 0 0 1; 1 0 1];
 G = graph(col1,col2);
 figure,
 h = plot(G,'NodeColor',color(idx,:));
-
 
