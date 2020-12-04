@@ -78,8 +78,8 @@ public class Jabeja {
 
     // swap the colors
         int tmp = partner.getColor();
-        partner.color = nodep.getColor();
-        nodep.color = tmp;
+        partner.setColor(nodep.getColor());
+        nodep.setColor(tmp);
         
         
       
@@ -91,9 +91,10 @@ public class Jabeja {
 
     Node bestPartner = null;
     double highestBenefit = 0;
-
+    
     // DONE
-    for (int nodeq: nodes){
+    for (int n: nodes){
+      Node nodeq = entireGraph.get(n);
       int dpp = getDegree(nodep, nodep.getColor());
       int dqq = getDegree(nodeq, nodeq.getColor());
       double old = Math.pow(dpp, config.getAlpha()) + Math.pow(dqq, config.getAlpha());
