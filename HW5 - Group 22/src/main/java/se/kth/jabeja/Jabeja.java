@@ -33,13 +33,33 @@ public class Jabeja {
 
   //-------------------------------------------------------------------
   public void startJabeja() throws IOException {
+    int swp_old = 0;
+    int counter = 0;
     for (round = 0; round < config.getRounds(); round++) {
+      //for the optional part
+      //if (numberOfSwaps == swp_old){
+      //  counter++;
+      //  if (counter > 50)
+      //      break;
+      //  } else {
+      //      swp_old = numberOfSwaps;
+      //      counter = 0;
+      //  }
+
       for (int id : entireGraph.keySet()) {
         sampleAndSwap(id);
       }
 
+
+
       //one cycle for all nodes have completed.
       //reduce the temperature
+
+      // Task 2.2
+
+      //if (round % 400 == 0)
+      //  T = config.getTemperature();
+
       saCoolDown();
       report();
     }
@@ -50,10 +70,26 @@ public class Jabeja {
    */
   private void saCoolDown(){
     // TODO for second task
+
+    // Task 1
+
     if (T > 1)
-      T -= config.getDelta();
+        T -= config.getDelta();
     if (T < 1)
-      T = 1;
+        T = 1;
+
+    // Task 2.1
+
+    //float Tmin = 0.0001F;
+    //float alpha = 0.9F;
+
+    //T *= alpha;
+
+    //if (T < Tmin) //&& (round % 200 == 0))
+
+    //    T = Tmin;
+            
+
   }
 
   /**
@@ -70,20 +106,21 @@ public class Jabeja {
         partner = findPartner(nodeId, getNeighbors(nodep));
     }
 
-    if (config.getNodeSelectionPolicy() == NodeSelectionPolicy.HYBRID
+    if ((config.getNodeSelectionPolicy() == NodeSelectionPolicy.HYBRID && partner == null)
             || config.getNodeSelectionPolicy() == NodeSelectionPolicy.RANDOM) {
       // if local policy fails then randomly sample the entire graph
         partner = findPartner(nodeId, getSample(nodeId));
     }
 
     // swap the colors
+
     if (partner != null) {
         int tmp = partner.getColor();
         partner.setColor(nodep.getColor());
         nodep.setColor(tmp);
         this.numberOfSwaps++;
     }
-    saCoolDown();
+    //saCoolDown();
         
       
   }
@@ -104,11 +141,27 @@ public class Jabeja {
       int dpq = getDegree(nodep, nodeq.getColor());
       int dqp = getDegree(nodeq, nodep.getColor());
       double new_ = Math.pow(dpq, config.getAlpha()) + Math.pow(dqp, config.getAlpha());
-      
-      if (new_*nodeId > old && new_ > highestBenefit) {
+
+      // task 1 linear
+
+      //if (new_*T > old && new_ > highestBenefit && (new_ !=old)) {
+
+      if (new_*T > old && new_ > highestBenefit) {
         bestPartner = nodeq;
         highestBenefit = new_;
-      } 
+      }
+
+      // task 2 exponential
+      //double a = Math.exp((new_ - old)/T);
+      //if ((a > Math.random()) && (new_ > highestBenefit) && (new_ !=old)) { 
+
+      //if ((a > Math.random()) && (new_ > highestBenefit)) {
+
+      //    bestPartner = nodeq;
+      //    highestBenefit = new_;
+      //}
+      //}
+
     }
 
     return bestPartner;
@@ -228,7 +281,8 @@ public class Jabeja {
     logger.info("round: " + round +
             ", edge cut:" + edgeCut +
             ", swaps: " + numberOfSwaps +
-            ", migrations: " + migrations);
+            ", migrations: " + migrations +
+            ", T: " + T);
 
     saveToFile(edgeCut, migrations);
   }
