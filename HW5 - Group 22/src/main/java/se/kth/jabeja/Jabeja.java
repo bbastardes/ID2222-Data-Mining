@@ -57,8 +57,8 @@ public class Jabeja {
 
       // Task 2.2
 
-      //if (round % 400 == 0)
-      //  T = config.getTemperature();
+      if (round % 400 == 0)
+        T = config.getTemperature();
 
       saCoolDown();
       report();
@@ -73,21 +73,21 @@ public class Jabeja {
 
     // Task 1
 
-    if (T > 1)
-        T -= config.getDelta();
-    if (T < 1)
-        T = 1;
+    //if (T > 1)
+    //    T -= config.getDelta();
+    //if (T < 1)
+    //    T = 1;
 
     // Task 2.1
 
-    //float Tmin = 0.0001F;
-    //float alpha = 0.9F;
+    float Tmin = 0.0001F;
+    config.setDelta(0.99f); 
 
-    //T *= alpha;
+    T *= config.getDelta();;
 
-    //if (T < Tmin) //&& (round % 200 == 0))
+    if (T < Tmin) //&& (round % 200 == 0))
 
-    //    T = Tmin;
+        T = Tmin;
             
 
   }
@@ -144,23 +144,24 @@ public class Jabeja {
 
       // task 1 linear
 
-      //if (new_*T > old && new_ > highestBenefit && (new_ !=old)) {
+      //if (new_*T > old && new_ > highestBenefit && (new_ !=old)) { //with extra condition
 
-      if (new_*T > old && new_ > highestBenefit) {
-        bestPartner = nodeq;
-        highestBenefit = new_;
-      }
+      //if (new_*T > old && new_ > highestBenefit) {
+      //  bestPartner = nodeq;
+      //  highestBenefit = new_;
+      //}
 
       // task 2 exponential
-      //double a = Math.exp((new_ - old)/T);
-      //if ((a > Math.random()) && (new_ > highestBenefit) && (new_ !=old)) { 
+      double a = Math.exp((new_ - old)/T);
+      if ((a > Math.random()) && (new_ > highestBenefit) && (new_ !=old)) { 
 
       //if ((a > Math.random()) && (new_ > highestBenefit)) {
 
-      //    bestPartner = nodeq;
-      //    highestBenefit = new_;
+          bestPartner = nodeq;
+          highestBenefit = new_;
       //}
-      //}
+
+      }
 
     }
 
